@@ -6,7 +6,9 @@ const RootLayout = () => {
 		<>
 			<Navigation />
 			<ScrollRestoration />
-			<Outlet />
+			<div className='container'>
+				<Outlet />
+			</div>
 		</>
 	);
 };

@@ -4,8 +4,8 @@ import { todoListRoute } from './pages/TodoList';
 import { userListRoute } from './pages/UserList';
 import { postListRoute } from './pages/PostList';
 
-import UserItem from './pages/UserItem';
-import PostItem from './pages/PostItem';
+import { UserByIdRoute } from './pages/UserItem';
+import { PostByIdRoute } from './pages/PostItem';
 
 export const router = createBrowserRouter([
 	{
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: ':userId',
-						element: <UserItem />,
+						...UserByIdRoute,
 					},
 				],
 			},
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: ':postId',
-						element: <PostItem />,
+						...PostByIdRoute,
 					},
 				],
 			},

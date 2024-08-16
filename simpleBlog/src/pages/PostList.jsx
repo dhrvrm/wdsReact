@@ -1,10 +1,20 @@
 import { useLoaderData } from 'react-router-dom';
 import { getPosts } from '../api/posts';
+import PostCard from '../components/PostCard';
 
 const PostList = () => {
 	const posts = useLoaderData();
 
-	return <div>PostList - {posts.length}</div>;
+	return (
+		<>
+			<h1 className='page-title'>PostList</h1>
+			<div className='card-grid'>
+				{posts.map((post) => {
+					return <PostCard key={post.id} {...post} />;
+				})}
+			</div>
+		</>
+	);
 };
 
 function loader({ request: { signal } }) {
