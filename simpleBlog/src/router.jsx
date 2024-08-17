@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, useRouteError } from 'react-router-dom';
 import RootLayout from './Layouts/RootLayout';
 import { todoListRoute } from './pages/TodoList';
 import { userListRoute } from './pages/UserList';
@@ -12,42 +12,69 @@ export const router = createBrowserRouter([
 		path: '/',
 		element: <RootLayout />,
 		children: [
-			{ index: true, element: <Navigate to='posts' /> },
 			{
-				path: 'todos',
+				errorElement: <ErrorPage />,
 				children: [
+					{ index: true, element: <Navigate to='posts' /> },
 					{
-						index: true,
-						...todoListRoute,
-					},
-				],
-			},
-			{
-				path: 'users',
-				children: [
-					{
-						index: true,
-						...userListRoute,
+						path: 'todos',
+						children: [
+							{
+								index: true,
+								...todoListRoute,
+							},
+						],
 					},
 					{
-						path: ':userId',
-						...UserByIdRoute,
+						path: 'users',
+						children: [
+							{
+								index: true,
+								...userListRoute,
+							},
+							{
+								path: ':userId',
+								...UserByIdRoute,
+							},
+						],
 					},
-				],
-			},
-			{
-				path: 'posts',
-				children: [
 					{
-						index: true,
-						...postListRoute,
+						path: 'posts',
+						children: [
+							{
+								index: true,
+								...postListRoute,
+							},
+							{
+								path: ':postId',
+								...PostByIdRoute,
+							},
+						],
 					},
 					{
-						path: ':postId',
-						...PostByIdRoute,
+						path: '*',
+						element: (
+							<h1 className='page-title'>404 - Error: Page not found.</h1>
+						),
 					},
 				],
 			},
 		],
 	},
 ]);
+
+function ErrorPage() {
+	const error = useRouteError();
+
+	return (
+		<>
+			<h1>Error - Something went wrong</h1>
+			{import.meta.env.MODE !== 'production' && (
+				<>
+					<pre>{error.message}</pre>
+					<pre>{error.stack}</pre>
+				</>
+			)}
+		</>
+	);
+}
